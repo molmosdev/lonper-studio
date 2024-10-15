@@ -3,14 +3,14 @@ import {defineField, defineType} from 'sanity'
 export default defineType({
   name: 'fieldSubconfig',
   title: 'Subconfiguración',
-  type: 'object',
+  type: 'document',
   fields: [
     defineField({
-      name: 'configName',
-      title: 'Configuración',
+      name: 'name',
+      title: 'Nombre de la Subconfiguración',
       type: 'string',
-      hidden: true,
       initialValue: 'Subconfiguración',
+      hidden: true,
     }),
     defineField({
       name: 'linkedActiveArray',
@@ -35,6 +35,12 @@ export default defineType({
               type: 'string',
             },
           ],
+          preview: {
+            select: {
+              title: 'linkedField.name',
+              subtitle: 'linkedValue',
+            },
+          },
         },
       ],
     }),
@@ -65,11 +71,13 @@ export default defineType({
       name: 'required',
       title: 'Requerido',
       type: 'boolean',
+      initialValue: true,
     }),
     defineField({
       name: 'showName',
       title: 'Mostrar nombre',
       type: 'boolean',
+      initialValue: true,
     }),
     defineField({
       name: 'hoverText',

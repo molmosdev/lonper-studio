@@ -1,0 +1,27 @@
+.hQzIeZ[data-as='a']:not([data-disabled])[data-selected] {
+  background-color: #f7cf1b4d !important;
+  color: inherit !important;
+  * {
+    color: inherit !important;
+  }
+}
+
+.dfTtDh {
+  background-color: #f7cf1b4d !important;
+  color: inherit !important;
+  * {
+    color: inherit !important;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.kaChbX {
+  gap: 1rem !important;
+}
+
+.bpeXCA {
+  background-color: #f7cf1b9a !important;
+}

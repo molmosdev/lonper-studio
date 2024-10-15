@@ -1,5 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import fieldConfig from './fieldConfigType'
 
 export default defineType({
   name: 'field',
@@ -29,9 +28,8 @@ export default defineType({
       type: 'array',
       of: [
         {
-          type: 'object',
-          title: 'Configuración',
-          fields: fieldConfig.fields,
+          type: 'reference',
+          to: {type: 'fieldConfig'},
         },
       ],
       validation: (rule) => rule.unique().error('No puedes repetir la misma configuración'),

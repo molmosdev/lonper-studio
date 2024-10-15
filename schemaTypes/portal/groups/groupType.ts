@@ -17,5 +17,11 @@ export default defineType({
       type: 'array',
       of: [{type: 'reference', to: {type: 'field'}}],
     }),
+    defineField({
+      name: 'orderRank',
+      title: 'Order Rank',
+      type: 'string',
+      hidden: true, // Ocultar este campo en el editor
+    }),
   ],
 })
