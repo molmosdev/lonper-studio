@@ -6,6 +6,13 @@ export default defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'configName',
+      title: 'Configuración',
+      type: 'string',
+      hidden: true,
+      initialValue: 'Subconfiguración',
+    }),
+    defineField({
       name: 'linkedActiveArray',
       title: 'Vinculaciones por activación',
       type: 'array',
@@ -30,17 +37,6 @@ export default defineType({
           ],
         },
       ],
-    }),
-    defineField({
-      name: 'subconfigName',
-      title: 'Nombre de subconfiguración',
-      type: 'string',
-      hidden: true,
-      initialValue: async (context) => {
-        const parent = await context.parent
-        const index = parent ? parent.length : 0
-        return `Subconfiguración ${index + 1}`
-      },
     }),
     defineField({
       name: 'linkedSameOnValidate',
@@ -107,14 +103,14 @@ export default defineType({
         ],
       },
     }),
-    {
+    defineField({
       name: 'selectOptions',
       title: 'Opciones de selección',
       type: 'array',
       of: [{type: 'string'}],
       hidden: ({parent}) => parent?.type !== 'SELECT',
-    },
-    {
+    }),
+    defineField({
       name: 'dbSelectOptions',
       title: 'Opciones del selector de base de datos',
       type: 'object',
@@ -181,6 +177,6 @@ export default defineType({
         },
       ],
       hidden: ({parent}) => parent?.type !== 'DB_SELECT',
-    },
+    }),
   ],
 })

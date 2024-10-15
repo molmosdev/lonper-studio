@@ -11,11 +11,7 @@ export default defineType({
       title: 'Nombre de Configuración',
       type: 'string',
       hidden: true,
-      initialValue: async (context) => {
-        const parent = await context.parent
-        const index = parent ? parent.length : 0
-        return `Configuración ${index + 1}`
-      },
+      initialValue: 'Configuración',
     }),
     defineField({
       name: 'subconfigurations',
