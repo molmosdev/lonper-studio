@@ -10,7 +10,8 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "linter": "eslint --ext .ts,.tsx ."
   },
   "keywords": [
     "sanity"
