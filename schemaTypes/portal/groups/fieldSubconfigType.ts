@@ -1,17 +1,18 @@
 import {defineField, defineType} from 'sanity'
 
+const fieldTypeOptions = [
+  {title: 'Casilla de verificación', value: 'CHECKBOX'},
+  {title: 'Selector', value: 'SELECT'},
+  {title: 'Selector de base de datos', value: 'DB_SELECT'},
+  {title: 'Texto', value: 'TEXT'},
+  {title: 'Número', value: 'NUMBER'},
+]
+
 export default defineType({
   name: 'fieldSubconfig',
   title: 'Subconfiguración',
-  type: 'document',
+  type: 'object',
   fields: [
-    defineField({
-      name: 'name',
-      title: 'Nombre de la Subconfiguración',
-      type: 'string',
-      initialValue: 'Subconfiguración',
-      hidden: true,
-    }),
     defineField({
       name: 'linkedActiveArray',
       title: 'Vinculaciones por activación',
@@ -30,15 +31,39 @@ export default defineType({
               },
             },
             {
+              name: 'hasValue',
+              title: 'Tiene valor',
+              type: 'boolean',
+              initialValue: false,
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  if (value) {
+                    const subconfig = context.parent as {linkedValue?: string}
+                    if (subconfig.linkedValue) {
+                      subconfig.linkedValue = undefined
+                    }
+                  }
+                  return true
+                }),
+            },
+            {
               name: 'linkedValue',
               title: 'Valor vinculado',
               type: 'string',
+              hidden: ({parent}) => parent.hasValue,
             },
           ],
           preview: {
             select: {
-              title: 'linkedField.name',
-              subtitle: 'linkedValue',
+              linkedFieldName: 'linkedField.name',
+              linkedValue: 'linkedValue',
+              hasValue: 'hasValue',
+            },
+            prepare({linkedFieldName, linkedValue, hasValue}) {
+              return {
+                title: linkedFieldName,
+                subtitle: hasValue ? 'Tiene valor' : linkedValue,
+              }
             },
           },
         },
@@ -80,21 +105,17 @@ export default defineType({
       initialValue: true,
     }),
     defineField({
-      name: 'hoverText',
-      title: 'Texto al pasar por encima',
-      type: 'string',
-    }),
-    defineField({
       name: 'size',
       title: 'Ancho de campo',
       type: 'string',
       options: {
         list: ['1/3', '1/5', '2/3', '1'],
       },
+      validation: (rule) => rule.required().error('El ancho de campo es obligatorio'),
     }),
     defineField({
-      name: 'value',
-      title: 'Valor por defecto',
+      name: 'hoverText',
+      title: 'Texto al pasar por encima',
       type: 'string',
     }),
     defineField({
@@ -102,14 +123,9 @@ export default defineType({
       title: 'Tipo de campo',
       type: 'string',
       options: {
-        list: [
-          {title: 'Casilla de verificación', value: 'CHECKBOX'},
-          {title: 'Selector', value: 'SELECT'},
-          {title: 'Selector de base de datos', value: 'DB_SELECT'},
-          {title: 'Texto', value: 'TEXT'},
-          {title: 'Número', value: 'NUMBER'},
-        ],
+        list: fieldTypeOptions,
       },
+      validation: (rule) => rule.required().error('El tipo de campo es obligatorio'),
     }),
     defineField({
       name: 'selectOptions',
@@ -127,6 +143,7 @@ export default defineType({
           name: 'withSearch',
           title: 'Con búsqueda',
           type: 'boolean',
+          initialValue: true,
         },
         {
           name: 'tableName',
@@ -165,6 +182,12 @@ export default defineType({
               type: 'object',
               fields: [
                 {
+                  name: 'linked',
+                  title: 'Enlazado',
+                  type: 'boolean',
+                  initialValue: false,
+                },
+                {
                   name: 'column',
                   title: 'Columna',
                   type: 'string',
@@ -173,18 +196,64 @@ export default defineType({
                   name: 'equal',
                   title: 'Igual',
                   type: 'boolean',
+                  initialValue: true,
                 },
                 {
                   name: 'value',
                   title: 'Valor',
                   type: 'string',
+                  hidden: ({parent}) => parent.linked,
+                },
+                {
+                  name: 'linkedField',
+                  title: 'Campo enlazado',
+                  type: 'reference',
+                  to: [{type: 'field'}],
+                  hidden: ({parent}) => !parent.linked,
                 },
               ],
+              preview: {
+                select: {
+                  column: 'column',
+                  linkedFieldValue: 'linkedField.name',
+                  value: 'value',
+                  equal: 'equal',
+                },
+                prepare({column, linkedFieldValue, value, equal}) {
+                  const finalValue = value || linkedFieldValue
+                  const subtitle = equal ? `Igual a ${finalValue}` : `Diferente a ${finalValue}`
+                  return {
+                    title: column,
+                    subtitle,
+                  }
+                },
+              },
             },
           ],
         },
       ],
       hidden: ({parent}) => parent?.type !== 'DB_SELECT',
     }),
+    defineField({
+      name: 'value',
+      title: 'Valor por defecto',
+      type: 'string',
+    }),
   ],
+  preview: {
+    select: {
+      type: 'type',
+      dataUnit: 'dataUnit',
+    },
+    prepare(selection) {
+      const {type, dataUnit} = selection
+      const selectedType = fieldTypeOptions.find((option) => option.value === type)
+      const title = selectedType ? selectedType.title : 'Sin tipo'
+      const subtitle = dataUnit ? dataUnit : ''
+      return {
+        title: title,
+        subtitle: subtitle,
+      }
+    },
+  },
 })

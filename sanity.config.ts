@@ -6,6 +6,7 @@ import {Logo} from './components/Logo'
 import './styles.css'
 import {ProjectsIcon, DesktopIcon} from '@sanity/icons'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
+import {esESLocale} from '@sanity/locale-es-es'
 
 // Placeholder function to get the current user's role
 // Replace this with your actual logic to get the current user's role
@@ -64,6 +65,7 @@ export default defineConfig({
   dataset: 'production',
   plugins: [
     structureTool({structure}),
+    esESLocale(),
     ...(getCurrentUserRole() === 'administrator' ? [visionTool()] : []), // Conditionally include visionTool
   ],
   schema: {
