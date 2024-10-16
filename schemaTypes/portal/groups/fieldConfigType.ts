@@ -10,7 +10,12 @@ export default defineType({
       title: 'Nombre de la Configuración',
       type: 'string',
       initialValue: 'Configuración',
-      hidden: true,
+    }),
+    defineField({
+      name: 'description',
+      title: 'Descripción',
+      type: 'string',
+      description: 'Descripción opcional de la configuración',
     }),
     defineField({
       name: 'subconfigurations',
@@ -19,4 +24,10 @@ export default defineType({
       of: [{type: 'fieldSubconfig'}],
     }),
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'description',
+    },
+  },
 })

@@ -14,6 +14,12 @@ export default defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'description',
+      title: 'Descripción',
+      type: 'string',
+      description: 'Descripción opcional de la subconfiguración',
+    }),
+    defineField({
       name: 'linkedActiveArray',
       title: 'Vinculaciones por activación',
       type: 'array',
@@ -244,12 +250,15 @@ export default defineType({
     select: {
       type: 'type',
       dataUnit: 'dataUnit',
+      description: 'description',
     },
     prepare(selection) {
-      const {type, dataUnit} = selection
+      const {type, dataUnit, description} = selection
       const selectedType = fieldTypeOptions.find((option) => option.value === type)
-      const title = selectedType ? selectedType.title : 'Sin tipo'
-      const subtitle = dataUnit ? dataUnit : ''
+      const title = selectedType
+        ? `${selectedType.title}${dataUnit ? ` (${dataUnit})` : ''}`
+        : 'Sin tipo'
+      const subtitle = description || ''
       return {
         title: title,
         subtitle: subtitle,

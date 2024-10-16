@@ -7,7 +7,8 @@
     cursor: pointer;
   }
 
-  &:not([data-disabled])[data-selected] {
+  &:not([data-disabled])[data-selected],
+  &:not([data-disabled])[data-pressed] {
     background-color: #f7cf1b4d !important;
     color: inherit !important;
     * {
@@ -18,6 +19,10 @@
 
 .FcyYf.FcyYf {
   border: 0 !important;
+}
+
+.jXayrr {
+  padding-left: 20px !important;
 }
 
 /* Button */

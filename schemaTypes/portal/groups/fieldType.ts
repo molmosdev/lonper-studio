@@ -36,4 +36,10 @@ export default defineType({
       validation: (rule) => rule.unique().error('No puedes repetir la misma configuración'),
     }),
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'description',
+    },
+  },
 })
