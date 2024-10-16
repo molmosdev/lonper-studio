@@ -21,6 +21,7 @@ export default defineType({
       name: 'saveOnRequest',
       title: 'Guardar bajo petición',
       type: 'boolean',
+      initialValue: true,
     }),
     defineField({
       name: 'configurations',
