@@ -1,4 +1,5 @@
-.hQzIeZ[data-as='a']:not([data-disabled])[data-selected] {
+.hQzIeZ[data-as='a']:not([data-disabled])[data-selected],
+.fmpniN[data-as='a']:not([data-disabled])[data-selected] {
   background-color: #f7cf1b4d !important;
   color: inherit !important;
   * {
