@@ -23,5 +23,16 @@ export default defineType({
       type: 'number',
       validation: (rule) => rule.required().error('El nombre de la subfamilia es obligatorio'),
     }),
+    defineField({
+      name: 'configs',
+      title: 'Configuraciones',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: {type: 'fieldConfig'},
+        },
+      ],
+    }),
   ],
 })
